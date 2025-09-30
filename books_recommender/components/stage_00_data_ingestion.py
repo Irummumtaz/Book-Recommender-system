@@ -1,6 +1,6 @@
 import os 
 import sys
-from six.moves import urllib
+import urllib.request
 import zipfile
 from books_recommender.logger.log import logging
 from books_recommender.exception.exception_handler import AppException
@@ -15,10 +15,11 @@ class DataIngestion:
         """
         try:
             logging.info(f"{'='*20}Data Ingestion log started.{'='*20} ")
+            self.app_config = app_config or AppConfiguration()
             self.data_ingestion_config= app_config.get_data_ingestion_config()
         except Exception as e:
             raise AppException(e, sys) from e
-
+    
     
     def download_data(self):
         """
