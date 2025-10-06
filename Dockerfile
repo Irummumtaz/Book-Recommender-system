@@ -1,21 +1,27 @@
 FROM python:3.11-slim-bookworm
 
-# Set the working directory
+# Set working directory
 WORKDIR /app
-COPY . . 
 
+# Copy all project files first
+COPY . .
 
-# Install dependencies
+# Install system dependencies and Python packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    git \
-    && pip install --no-cache-dir -r requirements.txt \
-    && apt-get remove -y build-essential git \
-    && apt-get autoremove -y \
-    && rm -rf /var/lib/apt/lists/*
+        build-essential \
+        git \
+        python3-dev \
+        libffi-dev \
+        libssl-dev \
+        wget \
+        curl \
+        && pip install --upgrade pip \
+        && pip install --no-cache-dir -r requirements.txt \
+        && apt-get remove -y build-essential git python3-dev libffi-dev libssl-dev \
+        && apt-get autoremove -y \
+        && rm -rf /var/lib/apt/lists/*
 
-
-# Expose the Streamlit port
+# Expose Streamlit port
 EXPOSE 8501
 
 # Run Streamlit app
