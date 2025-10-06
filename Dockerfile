@@ -2,9 +2,8 @@ FROM python:3.11-slim-bookworm
 
 # Set the working directory
 WORKDIR /app
+COPY . . 
 
-# Copy requirements first for layer caching
-COPY requirements.txt .
 
 # Install dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -15,8 +14,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy the rest of the app
-COPY . .
 
 # Expose the Streamlit port
 EXPOSE 8501
